@@ -110,11 +110,25 @@ class CategoryController extends AbstractController
     }
 
     #[Route('/categories/{id}', name: 'delete_category_id', methods: ['DELETE'])]
-    public function delete(Category $category)
-    {
+    public function delete(
+        Category $category,
+        EntityManagerInterface $entityManager
+    ): Response {
+        // Vérifier si la catégorie existe
+        if (!$category) {
+            return $this->json([
+                'message' => 'Category not found'
+            ], Response::HTTP_NOT_FOUND);  // Code HTTP 404 si la catégorie n'existe pas
+        }
+    
+        // Supprimer la catégorie
+        $entityManager->remove($category);
+        $entityManager->flush(); // Valider la suppression dans la base de données
+    
+        // Retourner une réponse JSON
         return $this->json([
-
-        ]);
+            'message' => 'Category deleted successfully'
+        ], Response::HTTP_OK); // Code HTTP 200 pour succès
     }
 
     #[Route('/categories/{id}', name: 'category_by_id', methods: ['GET'])]
