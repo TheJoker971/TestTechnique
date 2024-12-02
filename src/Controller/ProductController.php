@@ -3,6 +3,8 @@
 namespace App\Controller;
 
 use App\Entity\Product;
+use App\Repository\ProductRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Attribute\Route;
@@ -13,8 +15,6 @@ class ProductController extends AbstractController
     public function index()
     {
         return $this->json([
-            'message' => 'Welcome to your new controller!',
-            'path' => 'src/Controller/ProductController.php',
         ]);
     }
 
@@ -40,5 +40,18 @@ class ProductController extends AbstractController
         return $this->json([
 
         ]);
+    }
+
+    #[Route('/productss/{id}', name: 'product_by_id', methods: ['GET'])]
+    public function getById(int $id, ProductRepository $repository)
+    {
+        $product = $repository->find($id);
+        if(!isset($product)){
+            return $this->json([
+                'error' => 404,
+                'message' => 'Product not found'
+            ],);
+        }
+        return $this->json();
     }
 }
