@@ -6,6 +6,7 @@ use App\Entity\Category;
 use App\Form\CategoryType;
 use App\Repository\CategoryRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -61,12 +62,51 @@ class CategoryController extends AbstractController
 
 
 
-    #[Route('/categories/{id}', name: 'edit_category_id', methods: ['PUT'])]
-    public function edit(Category $category)
-    {
-        return $this->json([
+    #[Route('/categories/{id}', name: 'edit_category', methods: ['PUT'])]
+    public function edit(
+        int $id,
+        Request $request,
+        EntityManagerInterface $entityManager,
+        SerializerInterface $serializer
+    ): Response {
+        // Récupérer la catégorie à partir de l'ID
+        $category = $entityManager->getRepository(Category::class)->find($id);
 
+        // Vérifier si la catégorie existe
+        if (!$category) {
+            return $this->json([
+                'error' => 404,
+                'message' => 'Category not found'
+            ], Response::HTTP_NOT_FOUND);
+        }
+
+        // Récupérer le contenu de la requête en JSON
+        $data = json_decode($request->getContent(), true);
+
+        // Désérialiser les données JSON en l'entité Category
+        $serializer->deserialize(json_encode($data), Category::class, 'json', [
+            'object_to_populate' => $category
         ]);
+
+        // Créer et soumettre le formulaire pour valider l'entité Category
+        $form = $this->createForm(CategoryType::class, $category);
+        $form->submit($data); // Soumettre les nouvelles données du client au formulaire
+
+        if ($form->isValid()) {
+            // Si le formulaire est valide, mettre à jour l'entité
+            $entityManager->flush(); // Persister les modifications en base de données
+
+            return $this->json([
+                'message' => 'Category updated successfully',
+                'category' => $category
+            ], Response::HTTP_OK);
+        }
+
+        // Si le formulaire n'est pas valide, retourner les erreurs
+        return $this->json([
+            'message' => 'Invalid data',
+            'errors' => (string) $form->getErrors(true, false)
+        ], Response::HTTP_BAD_REQUEST);
     }
 
     #[Route('/categories/{id}', name: 'delete_category_id', methods: ['DELETE'])]
@@ -78,15 +118,8 @@ class CategoryController extends AbstractController
     }
 
     #[Route('/categories/{id}', name: 'category_by_id', methods: ['GET'])]
-    public function getById(int $id, CategoryRepository $repository)
+    public function getById(Category $category)
     {
-        $category = $repository->find($id);
-        if(!isset($category)){
-            return $this->json([
-                'error' => 404,
-                'message' => 'Category not found'
-            ],);
-        }
-        return $this->json();
+        return $this->json($category);
     }
 }
