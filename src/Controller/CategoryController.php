@@ -31,4 +31,12 @@ class CategoryController extends AbstractController
 
         ]);
     }
+
+    #[Route('/categories/{id}', name: 'delete_category_id', methods: ['DELETE'])]
+    public function delete()
+    {
+        return $this->json([
+
+        ]);
+    }
 }
