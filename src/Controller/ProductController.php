@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Product;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Attribute\Route;
@@ -26,7 +27,7 @@ class ProductController extends AbstractController
     }
 
     #[Route('/products/{id}', name: 'edit_product_id', methods: ['PUT'])]
-    public function edit()
+    public function edit(Product $product)
     {
         return $this->json([
 
@@ -34,7 +35,7 @@ class ProductController extends AbstractController
     }
 
     #[Route('/products/{id}', name: 'delete_product_id', methods: ['DELETE'])]
-    public function delete()
+    public function delete(Product $product)
     {
         return $this->json([
 

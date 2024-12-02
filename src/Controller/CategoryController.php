@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Category;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Attribute\Route;
@@ -25,7 +26,7 @@ class CategoryController extends AbstractController
     }
 
     #[Route('/categories/{id}', name: 'edit_category_id', methods: ['PUT'])]
-    public function edit()
+    public function edit(Category $category)
     {
         return $this->json([
 
@@ -33,7 +34,7 @@ class CategoryController extends AbstractController
     }
 
     #[Route('/categories/{id}', name: 'delete_category_id', methods: ['DELETE'])]
-    public function delete()
+    public function delete(Category $category)
     {
         return $this->json([
 
