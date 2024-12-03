@@ -18,10 +18,18 @@ class CategoryController extends AbstractController
     private $data = [];
 
     #[Route('/categories', name: 'show_all_categories', methods: ['GET'])]
-    public function index(CategoryRepository $repository)
+    public function index(CategoryRepository $repository, SerializerInterface $serializer): JsonResponse
     {
-        return $this->json($repository->findAll());
+        // Récupérer toutes les catégories
+        $categories = $repository->findAll();
+    
+        // Sérialiser les catégories avec les groupes
+        $json = $serializer->serialize($categories, 'json', ['groups' => ['category', 'product']]);
+    
+        // Retourner une réponse JSON sérialisée
+        return new JsonResponse($json, Response::HTTP_OK, [], true);
     }
+    
 
     #[Route('/categories', name: 'create_a_category', methods: ['POST'])]
     public function create(Request $request, EntityManagerInterface $entityManager)
@@ -132,8 +140,13 @@ class CategoryController extends AbstractController
     }
 
     #[Route('/categories/{id}', name: 'category_by_id', methods: ['GET'])]
-    public function getById(Category $category)
+    public function getById(Category $category, SerializerInterface $serializer): JsonResponse
     {
-        return $this->json($category);
+        // Sérialiser la catégorie avec les groupes
+        $json = $serializer->serialize($category, 'json', ['groups' => ['category', 'product']]);
+    
+        // Retourner une réponse JSON sérialisée
+        return new JsonResponse($json, Response::HTTP_OK, [], true);
     }
+    
 }

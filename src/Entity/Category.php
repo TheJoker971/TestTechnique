@@ -2,26 +2,27 @@
 
 namespace App\Entity;
 
-use App\Repository\CategoryRepository;
+use App\Entity\Product;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
-#[ORM\Entity(repositoryClass: CategoryRepository::class)]
+#[ORM\Entity()]
 class Category
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups(['category', 'product'])]
     private ?int $id = null;
 
     #[ORM\Column(length: 50)]
+    #[Groups(['category', 'product'])]
     private ?string $nom = null;
 
-    /**
-     * @var Collection<int, Product>
-     */
-    #[ORM\OneToMany(targetEntity: Product::class, mappedBy: 'categorie')]
+    #[ORM\OneToMany(mappedBy: 'categorie', targetEntity: Product::class)]
+    #[Groups(['products'])]
     private Collection $products;
 
     public function __construct()
@@ -42,7 +43,6 @@ class Category
     public function setNom(string $nom): static
     {
         $this->nom = $nom;
-
         return $this;
     }
 
@@ -60,19 +60,16 @@ class Category
             $this->products->add($product);
             $product->setCategorie($this);
         }
-
         return $this;
     }
 
     public function removeProduct(Product $product): static
     {
         if ($this->products->removeElement($product)) {
-            // set the owning side to null (unless already changed)
             if ($product->getCategorie() === $this) {
                 $product->setCategorie(null);
             }
         }
-
         return $this;
     }
 }
