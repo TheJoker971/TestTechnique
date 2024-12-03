@@ -15,18 +15,28 @@ use Symfony\Component\Serializer\SerializerInterface;
 
 class ProductController extends AbstractController
 {
-    #[Route('/products', name: 'show_all_products', methods: ['GET'])]
-    public function index(ProductRepository $repository, SerializerInterface $serializer): JsonResponse
-    {
-        // Récupérer tous les produits depuis la base de données
-        $products = $repository->findAll();
-
-        // Sérialiser les produits avec des groupes pour éviter les références circulaires
-        $json = $serializer->serialize($products, 'json', ['groups' => ['product']]);
-
-        // Retourner les produits sous forme de JSON
-        return new JsonResponse($json, Response::HTTP_OK, [], true);
+    #[Route('/products', name: 'products', methods: ['GET'])]
+    public function getProducts(
+        Request $request,
+        SerializerInterface $serializer,
+        ProductRepository $repository
+    ): JsonResponse {
+        // Récupérer les paramètres de requête
+        $queryParams = $request->query->all();
+    
+        // Vérifier si des paramètres sont fournis pour filtrer, sinon récupérer tous les produits
+        if (!empty($queryParams)) {
+            $products = $repository->findByAttributes($queryParams);
+        } else {
+            $products = $repository->findAll();
+        }
+    
+        // Sérialiser les données des produits
+        $json = $serializer->serialize($products, 'json', ['groups' => ['product:read']]);
+    
+        return new JsonResponse($json, JsonResponse::HTTP_OK, [], true);
     }
+    
 
     #[Route('/products', name: 'create_a_product', methods: ['POST'])]
     public function create(Request $request, SerializerInterface $serializer, EntityManagerInterface $entityManager): JsonResponse
@@ -103,4 +113,5 @@ class ProductController extends AbstractController
 
         return new JsonResponse($json, Response::HTTP_OK, [], true);
     }
+    
 }

@@ -16,6 +16,17 @@ class ProductRepository extends ServiceEntityRepository
         parent::__construct($registry, Product::class);
     }
 
+    public function findByAttributes(array $attributes): array
+    {
+        $qb = $this->createQueryBuilder('p');
+    
+        foreach ($attributes as $key => $value) {
+            $qb->andWhere("p.$key = :$key")
+               ->setParameter($key, $value);
+        }
+    
+        return $qb->getQuery()->getResult();
+    }
     
 
     //    /**

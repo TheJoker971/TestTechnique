@@ -13,28 +13,28 @@ class Product
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    #[Groups(['product','category'])]
+    #[Groups(['product:read','category:read'])]
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups(['product'])]
+    #[Groups(['product:read'])]
     private ?string $nom = null;
 
     #[ORM\Column(type: Types::TEXT)]
-    #[Groups(['product'])]
+    #[Groups(['product:read'])]
     private ?string $description = null;
 
     #[ORM\Column]
-    #[Groups(['product'])]
+    #[Groups(['product:read'])]
     private ?float $prix = null;
 
     #[ORM\ManyToOne(inversedBy: 'products')]
     #[ORM\JoinColumn(nullable: false)]
-    #[Groups(['product'])]
+    #[Groups(['product:read'])]
     private ?Category $categorie = null;
 
     #[ORM\Column]
-    #[Groups(['product'])]
+    #[Groups(['product:read'])]
     private ?\DateTimeImmutable $createAt = null;
 
     // Getters et setters
