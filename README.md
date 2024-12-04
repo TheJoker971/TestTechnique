@@ -175,8 +175,9 @@ L'application frontend est maintenant accessible à l'adresse : http://localhost
 
 ## Front
 
-Utilisation de Typescript pour mieux sécurisé le code en typant les types de retour pour éviter les erreurs
-Création de modal pour éviter de créer deux page différente une pour créer et une pour modifier
+- Utilisation de Typescript pour mieux sécurisé le code en typant les types de retour pour éviter les erreurs
+- Utilisation de `axios` car permet de transformer automatiquement les interfaces en JSON
+- Création de modal pour éviter de créer deux page différente une pour créer et une pour modifier
 
 Licence
 Ce projet est sous licence GNU.
