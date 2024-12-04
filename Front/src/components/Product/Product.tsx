@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import { ICategory } from "../../Model/CategoryModel";
 import { IProduct } from "../../Model/ProductModel";
 import axios from "axios";
+import API from "../../service/API";
 
 export default function Products() {
     const [products, setProducts] = useState<IProduct[]>([]);
@@ -20,7 +21,7 @@ export default function Products() {
     const fetchProducts = async () => {
         try {
             setIsLoading(true);
-            const response = await axios.get<IProduct[]>("http://localhost:8000/products");
+            const response = await axios.get<IProduct[]>(`${API.getUrl()}/products`);
             setProducts(response.data);
         } catch (err) {
             setError("Failed to fetch products.");
@@ -31,7 +32,7 @@ export default function Products() {
 
     const fetchCategories = async () => {
         try {
-            const response = await axios.get<ICategory[]>("http://localhost:8000/categories");
+            const response = await axios.get<ICategory[]>(`${API.getUrl()}/categories`);
             setCategories(response.data);
         } catch (err) {
             setError("Failed to fetch categories.");
@@ -40,7 +41,7 @@ export default function Products() {
 
     const handleCreate = async (newProduct: Omit<IProduct, "id">) => {
         try {
-            await axios.post("http://localhost:8000/products", {
+            await axios.post(`${API.getUrl()}/products`, {
                 ...newProduct,
                 categorie: newProduct.categorie.id,
             });
@@ -54,7 +55,7 @@ export default function Products() {
     const handleEdit = async (updatedProduct: Omit<IProduct, "id">) => {
         if (selectedProduct) {
             try {
-                await axios.put(`http://localhost:8000/products/${selectedProduct.id}`, {
+                await axios.put(`${API.getUrl()}/products/${selectedProduct.id}`, {
                     ...updatedProduct,
                     categorie: updatedProduct.categorie.id,
                 });
@@ -71,7 +72,7 @@ export default function Products() {
             return;
         }
         try {
-            await axios.delete(`http://localhost:8000/products/${id}`);
+            await axios.delete(`${API.getUrl()}/products/${id}`);
             fetchProducts();
         } catch (err) {
             setError("Failed to delete product.");
