@@ -3,7 +3,8 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 import reportWebVitals from './reportWebVitals';
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-import Home from './components/Home';
+import Home from './components/Home/Home';
+import Header from './components/Home/Header';
 
 const root = ReactDOM.createRoot(
     document.getElementById('root') as HTMLElement
@@ -11,6 +12,7 @@ const root = ReactDOM.createRoot(
 
 root.render(
     <React.StrictMode>
+        <Header/>
         <BrowserRouter>
             <Routes>
                 <Route path='/' element={<Home/>}/>
