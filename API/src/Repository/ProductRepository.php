@@ -27,6 +27,38 @@ class ProductRepository extends ServiceEntityRepository
     
         return $qb->getQuery()->getResult();
     }
+
+    // src/Repository/ProductRepository.php
+
+    public function findBySearchTerm(string $term): array
+    {
+        $queryBuilder = $this->createQueryBuilder('p');
+        return $queryBuilder
+            ->where($queryBuilder->expr()->orX(
+                $queryBuilder->expr()->like('p.nom', ':term'),
+                $queryBuilder->expr()->like('p.description', ':term')
+            ))
+            ->setParameter('term', '%' . $term . '%')
+            ->getQuery()
+            ->getResult();
+    }
+
+    public function findBySearchInCategory(string $term, int $category): array
+    {
+        $queryBuilder = $this->createQueryBuilder('p');
+
+        return $queryBuilder
+            ->where($queryBuilder->expr()->orX(
+                $queryBuilder->expr()->like('p.nom', ':term'),
+                $queryBuilder->expr()->like('p.description', ':term')
+            ))
+            ->andWhere('p.categorie = :category') // Utiliser "=" dans une chaîne, pas comme une concaténation
+            ->setParameter('term', '%' . $term . '%')
+            ->setParameter('category', $category) // Passer la valeur du paramètre
+            ->getQuery()
+            ->getResult();
+    }
+
     
 
     //    /**

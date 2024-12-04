@@ -23,19 +23,31 @@ class ProductController extends AbstractController
     ): JsonResponse {
         // Récupérer les paramètres de requête
         $queryParams = $request->query->all();
-    
-        // Vérifier si des paramètres sont fournis pour filtrer, sinon récupérer tous les produits
-        if (!empty($queryParams)) {
+
+        // Initialiser la liste des produits
+        $products = [];
+
+        // Si un paramètre "term" est fourni, effectuer une recherche par nom ou description
+        $term = $request->query->get('term', '');
+        $categoryId = $request->query->get('categorie', null);
+        if (!empty($term) && isset($categoryId)) {
+            $products = $repository->findBySearchInCategory($term,$categoryId);
+        }elseif (!empty($term) && !isset($categoryId)){
+            $products = $repository->findBySearchTerm($term);
+        } elseif (!empty($queryParams)) {
+            // Sinon, si d'autres paramètres sont fournis, filtrer par attributs
             $products = $repository->findByAttributes($queryParams);
         } else {
+            // Si aucun paramètre, récupérer tous les produits
             $products = $repository->findAll();
         }
-    
+
         // Sérialiser les données des produits
         $json = $serializer->serialize($products, 'json', ['groups' => ['product:read']]);
-    
+
         return new JsonResponse($json, JsonResponse::HTTP_OK, [], true);
     }
+
     
 
     #[Route('/products', name: 'create_a_product', methods: ['POST'])]

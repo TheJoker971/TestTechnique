@@ -80,6 +80,9 @@ DELETE	/categories/{id}	Supprime une catégorie
 Produits
 Méthode	Endpoint	Description
 GET	/products	Récupère tous les produits
+GET /products?term=an Récupère tous les produits contenant 'an' dans le nom ou la description
+GET /products?categorie=1 Récupère tous les produits de la catégorie ayant l'id 1
+GET /products?term=an&categorie=1 Récupère tous les produits contenant 'an' dans le nom ou la description appartenant à la catégorie ayant l'id 1
 POST	/products	Crée un nouveau produit
 GET	/products/{id}	Récupère un produit par son ID
 PUT	/products/{id}	Met à jour un produit existant
