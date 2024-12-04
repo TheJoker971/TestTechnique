@@ -10,7 +10,9 @@ export default function Products() {
     const [products, setProducts] = useState<IProduct[]>([]);
     const [categories, setCategories] = useState<ICategory[]>([]);
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const [isConfirmDeleteOpen, setIsConfirmDeleteOpen] = useState(false);
     const [selectedProduct, setSelectedProduct] = useState<IProduct | null>(null);
+    const [productToDelete, setProductToDelete] = useState<IProduct | null>(null);
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
 
@@ -68,15 +70,16 @@ export default function Products() {
         }
     };
 
-    const handleDelete = async (id: number) => {
-        if (!window.confirm("Are you sure you want to delete this product?")) {
-            return;
-        }
+    const handleDelete = async () => {
+        if (!productToDelete) return;
         try {
-            await axios.delete(`${API.getUrl()}/products/${id}`);
+            await axios.delete(`${API.getUrl()}/products/${productToDelete.id}`);
             fetchProducts();
+            setIsConfirmDeleteOpen(false);
+            setProductToDelete(null);
         } catch (err) {
             setError("Failed to delete product.");
+            setIsConfirmDeleteOpen(false);
         }
     };
 
@@ -84,7 +87,7 @@ export default function Products() {
         <div className="min-h-screen bg-gray-100 flex flex-col items-center p-6">
             {/* Title */}
             <h2 className="text-4xl font-bold text-gray-800 mb-6">Products</h2>
-    
+
             {/* Navbar */}
             <nav className="w-full max-w-7xl flex justify-between items-center bg-white p-4 rounded-lg shadow mb-8">
                 {/* Filtre par catégorie */}
@@ -109,7 +112,7 @@ export default function Products() {
                     Create Product
                 </button>
             </nav>
-    
+
             {/* Products */}
             {isLoading ? (
                 <div className="text-center text-gray-500 text-xl">Loading products...</div>
@@ -152,7 +155,10 @@ export default function Products() {
                                     Edit
                                 </button>
                                 <button
-                                    onClick={() => handleDelete(product.id)}
+                                    onClick={() => {
+                                        setProductToDelete(product);
+                                        setIsConfirmDeleteOpen(true);
+                                    }}
                                     className="bg-red-500 text-white px-4 py-2 rounded-full hover:bg-red-600 transition"
                                 >
                                     Delete
@@ -162,7 +168,7 @@ export default function Products() {
                     ))}
                 </ul>
             )}
-    
+
             {/* Modal to Create and Edit */}
             <ModalProduct
                 isOpen={isModalOpen}
@@ -171,8 +177,34 @@ export default function Products() {
                 product={selectedProduct}
                 categories={categories}
             />
+
+            {/* Modal Confirmation Delete */}
+            {isConfirmDeleteOpen && productToDelete && (
+                <div className="fixed inset-0 bg-gray-900 bg-opacity-50 flex items-center justify-center z-50">
+                    <div className="bg-white rounded-lg p-6 shadow-lg max-w-md w-full text-center">
+                        <h3 className="text-2xl font-bold mb-4 text-gray-800">
+                            Confirm Deletion
+                        </h3>
+                        <p className="text-gray-600">
+                            Are you sure you want to delete <strong>{productToDelete.nom}</strong>?
+                        </p>
+                        <div className="mt-6 flex justify-center gap-4">
+                            <button
+                                onClick={() => setIsConfirmDeleteOpen(false)}
+                                className="px-6 py-2 bg-gray-300 rounded-lg hover:bg-gray-400"
+                            >
+                                Cancel
+                            </button>
+                            <button
+                                onClick={handleDelete}
+                                className="px-6 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600"
+                            >
+                                Delete
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            )}
         </div>
     );
-    
-
 }
