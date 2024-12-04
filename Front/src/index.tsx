@@ -13,11 +13,11 @@ const root = ReactDOM.createRoot(
 
 root.render(
     <React.StrictMode>
-        <Header/>
         <BrowserRouter>
+            <Header/>
             <Routes>
-                <Route path='/' element={<Home/>}/>
-                <Route path='/products' element={<Products/>}/>
+                <Route path={'/'} element={<Home/>}/>
+                <Route path={'/products'} element={<Products/>}/>
             </Routes>
         </BrowserRouter>
     </React.StrictMode>
