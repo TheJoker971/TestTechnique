@@ -27,6 +27,22 @@ class ProductRepository extends ServiceEntityRepository
     
         return $qb->getQuery()->getResult();
     }
+
+    // src/Repository/ProductRepository.php
+
+    public function findBySearchTerm(string $term): array
+    {
+        $queryBuilder = $this->createQueryBuilder('p');
+        return $queryBuilder
+            ->where($queryBuilder->expr()->orX(
+                $queryBuilder->expr()->like('p.nom', ':term'),
+                $queryBuilder->expr()->like('p.description', ':term')
+            ))
+            ->setParameter('term', '%' . $term . '%')
+            ->getQuery()
+            ->getResult();
+    }
+
     
 
     //    /**
