@@ -179,8 +179,8 @@ L'application frontend est maintenant accessible à l'adresse : http://localhost
 - Utilisation de `axios` car permet de transformer automatiquement les interfaces en JSON
 - Création de modal pour éviter de créer deux page différente une pour créer et une pour modifier
 
-Licence
-Ce projet est sous licence GNU.
+# Licence
+** Ce projet est sous licence GNU. **
 
 
 
