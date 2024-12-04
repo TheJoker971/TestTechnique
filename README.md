@@ -73,21 +73,19 @@ Endpoints
 Catégories
 Méthode	Endpoint	Description
 GET	/categories	Récupère toutes les catégories
-POST	/categories	Crée une nouvelle catégorie
 GET	/categories/{id}	Récupère une catégorie par son ID
+POST	/categories	Crée une nouvelle catégorie
 PUT	/categories/{id}	Met à jour une catégorie existante
 DELETE	/categories/{id}	Supprime une catégorie
 Produits
 Méthode	Endpoint	Description
 GET	/products	Récupère tous les produits
-GET /products?term=an Récupère tous les produits contenant 'an' dans le nom ou la description
-GET /products?categorie=1 Récupère tous les produits de la catégorie ayant l'id 1
-GET /products?term=an&categorie=1 Récupère tous les produits contenant 'an' dans le nom ou la description appartenant à la catégorie ayant l'id 1
-POST	/products	Crée un nouveau produit
 GET	/products/{id}	Récupère un produit par son ID
+GET /products?term={search} Récupère tous les produits contenant 'search' dans le nom ou la description
+GET /products?term=an&categorie={id} Récupère tous les produits contenant 'search' dans le nom ou la description appartenant à la catégorie d'ID 'id'
+POST	/products	Crée un nouveau produit
 PUT	/products/{id}	Met à jour un produit existant
 DELETE	/products/{id}	Supprime un produit
-GET	/products?categorie={id}	Filtre les produits par catégorie
 ```
 Exemple de Requête
 Récupérer toutes les catégories
