@@ -54,7 +54,7 @@ GET	/categories/{id}	Récupère une catégorie par son ID
 POST	/categories	Crée une nouvelle catégorie
 PUT	/categories/{id}	Met à jour une catégorie existante
 DELETE	/categories/{id}	Supprime une catégorie
-
+```
 ### **Produits**
 |Méthode	| Endpoint | Description |
 |----------------------------------|
@@ -65,7 +65,7 @@ DELETE	/categories/{id}	Supprime une catégorie
 |POST	|/products	|Crée un nouveau produit|
 |PUT	|/products/{id}	|Met à jour un produit existant|
 |DELETE	|/products/{id}	|Supprime un produit|
-```
+
 Exemple de Requête
 Récupérer toutes les catégories
 Requête :
