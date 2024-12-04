@@ -180,7 +180,7 @@ L'application frontend est maintenant accessible à l'adresse : http://localhost
 - Création de modal pour éviter de créer deux page différente une pour créer et une pour modifier
 
 # Licence
-### Ce projet est sous licence GNU.
+**Ce projet est sous licence GNU.**
 
 
 
