@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-
 import { ICategory } from "../../Model/CategoryModel";
 import { IProduct } from "../../Model/ProductModel";
 import axios from "axios";
@@ -15,16 +14,22 @@ export default function Products() {
     const [productToDelete, setProductToDelete] = useState<IProduct | null>(null);
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
+    const [searchTerm, setSearchTerm] = useState<string>("");
+    const [selectedCategory, setSelectedCategory] = useState<number | null>(null);
 
     useEffect(() => {
         fetchProducts();
         fetchCategories();
-    }, []);
+    }, [selectedCategory, searchTerm]); // Mettre à jour la liste des produits lorsqu'on change la catégorie ou le terme de recherche
 
     const fetchProducts = async () => {
         try {
             setIsLoading(true);
-            const response = await axios.get<IProduct[]>(`${API.getUrl()}/products`);
+            const params: { term?: string; categorie?: number } = {};
+            if (searchTerm) params.term = searchTerm;
+            if (selectedCategory) params.categorie = selectedCategory;
+
+            const response = await axios.get<IProduct[]>(`${API.getUrl()}/products`, { params });
             setProducts(response.data);
         } catch (err) {
             setError("Failed to fetch products.");
@@ -89,10 +94,15 @@ export default function Products() {
             <h2 className="text-4xl font-bold text-gray-800 mb-6">Products</h2>
 
             {/* Navbar */}
-            <nav className="w-full max-w-7xl flex justify-between items-center bg-white p-4 rounded-lg shadow mb-8">
+            <nav className="w-full max-w-7xl flex flex-wrap justify-between items-center bg-white p-4 rounded-lg shadow mb-8">
                 {/* Filtre par catégorie */}
                 <select
                     className="border border-gray-300 rounded-lg px-4 py-2 text-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    value={selectedCategory || ""}
+                    onChange={(e) => {
+                        const value = e.target.value ? parseInt(e.target.value) : null;
+                        setSelectedCategory(value);
+                    }}
                 >
                     <option value="">All Categories</option>
                     {categories.map((category) => (
@@ -101,6 +111,16 @@ export default function Products() {
                         </option>
                     ))}
                 </select>
+
+                {/* Barre de recherche */}
+                <input
+                    type="text"
+                    placeholder="Search products..."
+                    value={searchTerm}
+                    onChange={(e) => setSearchTerm(e.target.value)}
+                    className="border border-gray-300 rounded-lg px-4 py-2 text-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                />
+
                 {/* Bouton Create */}
                 <button
                     onClick={() => {
