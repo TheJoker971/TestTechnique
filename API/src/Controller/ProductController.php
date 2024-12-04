@@ -29,7 +29,10 @@ class ProductController extends AbstractController
 
         // Si un paramètre "term" est fourni, effectuer une recherche par nom ou description
         $term = $request->query->get('term', '');
-        if (!empty($term)) {
+        $categoryId = $request->query->get('categorie', null);
+        if (!empty($term) && isset($categoryId)) {
+            $products = $repository->findBySearchInCategory($term,$categoryId);
+        }elseif (!empty($term) && !isset($categoryId)){
             $products = $repository->findBySearchTerm($term);
         } elseif (!empty($queryParams)) {
             // Sinon, si d'autres paramètres sont fournis, filtrer par attributs
