@@ -171,6 +171,13 @@ L'application frontend est maintenant accessible à l'adresse : http://localhost
 * Cliquez sur les boutons "Create" pour ajouter des produits ou des catégories.
 * Utilisez les options "Edit" et "Delete" pour modifier ou supprimer des éléments
 
+# Choix techniques
+
+## Front
+
+Utilisation de Typescript pour mieux sécurisé le code en typant les types de retour pour éviter les erreurs
+Création de modal pour éviter de créer deux page différente une pour créer et une pour modifier
+
 Licence
 Ce projet est sous licence GNU.
 
