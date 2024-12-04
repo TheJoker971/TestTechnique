@@ -1,6 +1,9 @@
-# MarketStore API
+# MarketStore API & Front
 
-MarketStore API est une application web construite avec Symfony pour gérer des produits et des catégories. Elle permet de créer, lire, mettre à jour et supprimer des produits et des catégories via des endpoints RESTful.
+MarketStore est une application web complète construite avec Symfony (pour l'API) et React (pour le frontend) pour gérer des produits et des catégories. Elle permet de créer, lire, mettre à jour et supprimer des produits et des catégories via des interfaces utilisateur et des endpoints RESTful.
+
+
+# API
 
 ## Prérequis
 
@@ -17,34 +20,8 @@ Avant d'installer l'API, assurez-vous que les éléments suivants sont installé
 
    ```bash
    git clone https://github.com/TheJoker971/TestTechnique.git
-   cd marketstore-api
+   cd API
 
-Voici un exemple de fichier README.md pour l'API. Ce fichier décrit l'objectif de l'API, son installation, sa configuration, et son utilisation.
-
-README.md
-markdown
-Copier le code
-# MarketStore API
-
-MarketStore API est une application web construite avec Symfony pour gérer des produits et des catégories. Elle permet de créer, lire, mettre à jour et supprimer des produits et des catégories via des endpoints RESTful.
-
-## Prérequis
-
-Avant d'installer l'API, assurez-vous que les éléments suivants sont installés sur votre système :
-
-- **PHP** (version 8.1 ou supérieure)
-- **Composer** (gestionnaire de dépendances PHP)
-- **MySQL** (ou un autre système de gestion de base de données compatible avec Doctrine)
-- **Symfony CLI** (optionnel, mais recommandé)
-
-## Installation
-
-1. Clonez ce dépôt sur votre machine locale :
-
-   ```bash
-   git clone https://github.com/votre-utilisateur/marketstore-api.git
-   cd marketstore-api
-   ```
 Installez les dépendances avec Composer :
 
 ```bash
@@ -137,13 +114,64 @@ Réponse :
 }
 ```
 
-Tests
+## Tests
 Pour Tester les requêtes
 https://www.postman.com/blue-shuttle-460900/workspace/test-technique
 
 
+# Front
+
+## Prérequis
+Avant d'installer le frontend, assurez-vous que les éléments suivants sont installés sur votre système :
+
+* Node.js (version 14 ou supérieure)
+* npm ou yarn (gestionnaire de paquets)
+
+Installation du Frontend
+Accédez au répertoire du frontend :
+
+```bash
+cd marketstore-front
+```
+Installez les dépendances avec npm ou yarn :
+
+```bash
+
+npm install
+# ou
+yarn install
+Lancez l'application en mode développement :
+
+```bash
+
+npm start
+# ou
+yarn start
+```
+
+L'application frontend est maintenant accessible à l'adresse : http://localhost:3000.
+
+### Fonctionnalités
+
+* Gestion des Produits
+* Lister les produits.
+* Rechercher des produits par nom ou description.
+* Filtrer les produits par catégorie.
+* Créer, modifier et supprimer des produits via une interface utilisateur.
+* Gestion des Catégories
+* Lister les catégories.
+* Créer, modifier et supprimer des catégories.
+* Exemple d'Utilisation
+* Recherche de Produits
+* Accédez à la page des produits.
+* Utilisez la barre de recherche pour rechercher par nom ou description.
+* Filtrez les produits en sélectionnant une catégorie dans la liste déroulante.
+* Gestion des Produits et Catégories
+* Cliquez sur les boutons "Create" pour ajouter des produits ou des catégories.
+* Utilisez les options "Edit" et "Delete" pour modifier ou supprimer des éléments
+
 Licence
-Ce projet est sous licence MIT.
+Ce projet est sous licence GNU.
 
 
 
