@@ -28,7 +28,7 @@ export default function Category() {
     const handleCreate = async (newCategory: Omit<ICategory, "id">) => {
         try {
             const response = await axios.post<ICategory>(`${API.getUrl()}/categories`, newCategory);
-            setCategories((prevCategories) => [...prevCategories, response.data]);
+            fetchCategories();
             setIsModalOpen(false);
         } catch (err) {
             setError("Failed to create category.");
@@ -54,9 +54,7 @@ export default function Category() {
         if (!categoryToDelete) return;
         try {
             await axios.delete(`${API.getUrl()}/categories/${categoryToDelete.id}`);
-            setCategories((prevCategories) =>
-                prevCategories.filter((category) => category.id !== categoryToDelete.id)
-            );
+            fetchCategories();
             setCategoryToDelete(null);
             setIsConfirmDeleteOpen(false);
         } catch (err) {
